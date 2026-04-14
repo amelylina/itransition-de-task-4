@@ -1,31 +1,15 @@
-# **TASK 4_DATA**
+## Implementation notes
 
-Load data from DATA1 folder into pandas and clean it – ensure proper types, for example, make dates are parsed as dates, handle any duplicated, missing or malformed values.
+Code is not extremely universal as the task was to just load from the given data, so:
+- in parsing prices I first ran a check to see which characters appear. For example ',' is not in any of the prices hence why I'm not accounting for that in parsing function. I was considering using regex, but I would need to make a pattern for each appearing price variants, so the decision was made to use a more robust function with splitting strings.
+- timestamps were a mess as well and I believe simple pandas builtin to_datetime wouldn't work without formating the strings in advance, but that would again require mapping all the patterns.
+- I ran a check on which columns have null values, and found out only the insignificant ones (like shipment in orders) have nulls. 'Address' column has nulls, but I decided against filling missing rows, as it could mess up the grouping user reconcilation system. Comparing users still runs smoothly as I also check for other column groupings like 'name,phone,email' etc.
 
-Add a column paid_price = quantity * unit_price to orders (convert everything to dollars and cents, €1 = $1.2).
+## Running
 
-Extract date (year, month and day) from timestamp.
+pip install -r requirements.txt
+python main.py
 
-Compute daily revenue (sum of paid_price grouped by date) and find top 5 days by revenue.
+Dashboard is written to docs/index.html, also hosted at github-pages of this repo.
 
-Find how many real unique users there are. Note that user can change address or change phone or even provide alias instead of a real name; you need to reconciliate data. You may assume that only one field is changed.
-
-Find how how many unique sets of authors there are. For example, if John and Paul wrote a book together and wrote several books separately, it means that there are 3 different sets.
-
-Find the most popular (by sold book count) author (or author set).
-
-Identify the top customer by total spending (list all user_id values for the possible different addresses, phones, e-mails, or aliases).
-
-Plot a simple line chart of daily revenue using matplotlib.
-
-Repeat for the data from DATA2 and DATA3 folders separately.
-
-## **Create a dashboard containing three tabs with the following:**
-- Top 5 days by revenue using the format "YYYY-MM-dd".
-- Number of unique users.
-- Number of unique sets of authors.
-- The name of most popular author(s).
-- Best buyer (with aliases) as an array of ids ([id1, id2, ...])
-- Daily revenue chart
-
-Make sure the information is presented neatly and professionally, resembling a BI dashboard rather than plain text. The use of any ready-made templates or engines is highly recommended.
+Data expected at data/DATA1/, data/DATA2/, data/DATA3/ — each with users.csv, orders.parquet, books.yaml.
