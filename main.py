@@ -18,7 +18,7 @@ def process_dir(dir:str):
         'unique_users': ag.unique_users(users),
         'unique_author_sets': ag.unique_authors(books),
         'most_pop_author': ag.most_pop_author(orders, books),
-        'top_customer_alias': ag.top_customer_id(orders, users,user_alias),
+        'top_customer_alias': user_alias[ag.top_customer_id(orders, users)],
         'daily_revenue': ag.daily_revenue(orders),
         'top_days': ag.top_n_days(orders),
     }

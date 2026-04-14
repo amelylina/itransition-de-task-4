@@ -8,8 +8,11 @@ from src.unionfind import UnionFind
 
 #------------------------------------------------------------
 # USERS
-def unique_users(users:pd.DataFrame):
+def user_alias(users: pd.DataFrame):
     uf = UnionFind()
+
+    for uid in users['id']:
+        uf.find(uid)
 
     fields = ['name', 'address', 'phone', 'email']
     for combo in combinations(fields, 3):
@@ -18,12 +21,14 @@ def unique_users(users:pd.DataFrame):
         for group in pairs:
             for i in range(1, len(group)):
                 uf.union(group[0], group[i])
-    
+
     alias = {}
     for uid in uf.parent.keys():
         root = uf.find(uid)
-        if root not in alias: alias[root] = {uid}
-        else : alias[root].add(uid)
+        if root not in alias:
+            alias[root] = {uid}
+        else:
+            alias[root].add(uid)
 
     return alias, uf
 
@@ -31,9 +36,9 @@ def load_process_users(users_path:Path):
     users = pd.read_csv(users_path)
     users['phone'] = users['phone'].str.replace(r'\D', '', regex=True)
 
-    alias, uf = unique_users(users)
+    alias, uf = user_alias(users)
     users['root_id'] = users['id'].apply(uf.find)
-    users.drop_duplicates()
+    users = users.drop_duplicates()
     return users, alias
 
 #------------------------------------------------------------
@@ -73,7 +78,7 @@ def load_process_orders(orders_path:Path):
     orders['day'] = orders['timestamp'].dt.day
     orders['date'] = orders['timestamp'].dt.date
     orders['paid_price'] = orders['unit_price'] * orders['quantity']
-    orders.drop_duplicates()
+    orders = orders.drop_duplicates()
     return orders
 
 #------------------------------------------------------------
@@ -84,7 +89,7 @@ def load_process_books(books_path:Path):
     books = pd.DataFrame(books_data)
     books.columns = books.columns.str.strip(':')
     books['author_set'] = books['author'].apply(lambda a: frozenset(name.strip() for name in a.split(',')))
-    books.drop_duplicates()
+    books = books.drop_duplicates()
     return books
 
 #------------------------------------------------------------

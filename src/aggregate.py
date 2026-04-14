@@ -12,15 +12,10 @@ def most_pop_author(orders:pd.DataFrame,books:pd.DataFrame):
     top_set = merged.value_counts().index[0]
     return ', '.join(sorted(top_set))
 
-def top_customer_id(orders:pd.DataFrame, users:pd.DataFrame, user_alias:dict):
+def top_customer_id(orders:pd.DataFrame, users:pd.DataFrame):
     merged = (orders.merge(right=users[['id','root_id']],left_on='user_id',right_on='id'))[['root_id','paid_price']]
     grouped = merged.groupby('root_id')['paid_price'].sum()
-    top_id = grouped.idxmax()
-    try:
-        top = user_alias[top_id]
-    except KeyError:
-        top = {top_id}
-    return top
+    return grouped.idxmax()
 
 def daily_revenue(orders:pd.DataFrame):
     daily = orders.groupby('date')['paid_price'].sum().sort_index()
