@@ -33,6 +33,7 @@ def load_process_users(users_path:Path):
 
     alias, uf = unique_users(users)
     users['root_id'] = users['id'].apply(uf.find)
+    users.drop_duplicates()
     return users, alias
 
 #------------------------------------------------------------
@@ -72,6 +73,7 @@ def load_process_orders(orders_path:Path):
     orders['day'] = orders['timestamp'].dt.day
     orders['date'] = orders['timestamp'].dt.date
     orders['paid_price'] = orders['unit_price'] * orders['quantity']
+    orders.drop_duplicates()
     return orders
 
 #------------------------------------------------------------
@@ -82,6 +84,7 @@ def load_process_books(books_path:Path):
     books = pd.DataFrame(books_data)
     books.columns = books.columns.str.strip(':')
     books['author_set'] = books['author'].apply(lambda a: frozenset(name.strip() for name in a.split(',')))
+    books.drop_duplicates()
     return books
 
 #------------------------------------------------------------

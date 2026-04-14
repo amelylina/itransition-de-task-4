@@ -15,10 +15,10 @@ def process_dir(dir:str):
     users,user_alias,orders,books =load_all_files(folder_path=DATA_FOLDER/dir)
     return {
         'name': dir,
-        'unique_users': len(user_alias),
-        'unique_author_sets': ag.unique_athors(books),
+        'unique_users': ag.unique_users(users),
+        'unique_author_sets': ag.unique_authors(books),
         'most_pop_author': ag.most_pop_author(orders, books),
-        'top_customer_alias': user_alias[ag.top_customer_id(orders, users)],
+        'top_customer_alias': ag.top_customer_id(orders, users,user_alias),
         'daily_revenue': ag.daily_revenue(orders),
         'top_days': ag.top_n_days(orders),
     }

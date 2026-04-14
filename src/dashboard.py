@@ -52,10 +52,10 @@ def build_tab_html(result, tab_index):
             </tr>'''
 
     alias_ids = sorted(result['top_customer_alias'])
-    alias_str = ', '.join(str(a) for a in alias_ids)
+    alias_str = '['+', '.join(str(a) for a in alias_ids)+']'
 
     return f'''
-    <div class="tab-content" id="tab-{tab_index}" {"" if tab_index != 0 else ""}>
+    <div class="tab-content" id="tab-{tab_index}">
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-label">Unique Users</div>
