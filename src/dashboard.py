@@ -1,5 +1,6 @@
 import base64
 import io
+from pathlib import Path
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -97,7 +98,9 @@ def build_tab_html(result, tab_index):
     </div>
     '''
 
-def generate_dashboard(results, output_path='dashboard.html'):
+def generate_dashboard(results, output_path:Path):
+    dashboard_path = output_path / 'index.html'
+
     tab_buttons = ''
     for i, r in enumerate(results):
         active = ' active' if i == 0 else ''
@@ -356,5 +359,5 @@ switchTab(0);
 </body>
 </html>'''
 
-    with open(output_path, 'w') as f:
+    with open(dashboard_path, 'w') as f:
         f.write(html)

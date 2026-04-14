@@ -9,6 +9,7 @@ log = logging.getLogger(__name__)
 
 MAIN_DIR = Path(__file__).parent
 DATA_FOLDER = MAIN_DIR / 'data'
+DOCS_FOLDER = MAIN_DIR / 'docs'
 
 def process_dir(dir:str):
     users,user_alias,orders,books =load_all_files(folder_path=DATA_FOLDER/dir)
@@ -31,6 +32,6 @@ if __name__ == "__main__":
         log.info(f"Starting processing directory : {dir}")
         results.append(process_dir(dir))
 
-    generate_dashboard(results, output_path='dashboard.html')
+    generate_dashboard(results, output_path=DOCS_FOLDER)
 
     log.info(f"Dashboard saved")
