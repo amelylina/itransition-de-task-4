@@ -28,10 +28,10 @@ if __name__ == "__main__":
 
     dirs = ['DATA1','DATA2','DATA3']
     results = []
-    for dir in dirs:
-        log.info(f"Starting processing directory : {dir}")
-        results.append(process_dir(dir))
+    for folder in dirs:
+        log.info(f"Starting processing directory : {folder}")
+        results.append(process_dir(folder))
 
     generate_dashboard(results, output_path=DOCS_FOLDER)
 
-    log.info(f"Dashboard saved")
+    log.info("Dashboard saved")
