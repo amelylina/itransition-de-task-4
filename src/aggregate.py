@@ -9,7 +9,8 @@ def unique_authors(books:pd.DataFrame):
 
 def most_pop_author(orders:pd.DataFrame,books:pd.DataFrame):
     merged = (orders.merge(right=books[['id','author_set']],left_on='book_id',right_on='id'))['author_set']
-    top_set = merged.value_counts().index[0]
+    grouped = merged.groupby('author_set')['quantity'].sum()
+    top_set = grouped.idxmax()
     return ', '.join(sorted(top_set))
 
 def top_customer_id(orders:pd.DataFrame, users:pd.DataFrame):
