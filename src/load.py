@@ -2,33 +2,22 @@ import pandas as pd
 from pathlib import Path
 from dateutil import parser
 import yaml
+from itertools import combinations
 
-from unionfind import UnionFind
+from src.unionfind import UnionFind
 
 #------------------------------------------------------------
 # USERS
 def unique_users(users:pd.DataFrame):
     uf = UnionFind()
 
-    groups = users.groupby(['address', 'phone', 'email'])['id'].agg(list)
-    ape = groups[groups.str.len() > 1].dropna().tolist()
-    for group in ape:
-        uf.union(group[0],group[1])
-
-    groups = users.groupby(['name','phone','email'])['id'].agg(list)
-    npe = groups[groups.str.len() > 1].dropna().tolist()
-    for group in npe:
-        uf.union(group[0],group[1])
-
-    groups = users.groupby(['name','address','phone'])['id'].agg(list)
-    nap = groups[groups.str.len() > 1].dropna().tolist()
-    for group in nap:
-        uf.union(group[0],group[1])
-
-    groups = users.groupby(['name','address','email'])['id'].agg(list)
-    nae = groups[groups.str.len() > 1].dropna().tolist()
-    for group in nae:
-        uf.union(group[0],group[1])
+    fields = ['name', 'address', 'phone', 'email']
+    for combo in combinations(fields, 3):
+        groups = users.groupby(list(combo))['id'].agg(list)
+        pairs = groups[groups.str.len() > 1].dropna().tolist()
+        for group in pairs:
+            for i in range(1, len(group)):
+                uf.union(group[0], group[i])
     
     alias = {}
     for uid in uf.parent.keys():
@@ -81,6 +70,7 @@ def load_process_orders(orders_path:Path):
     orders['year'] = orders['timestamp'].dt.year
     orders['month'] = orders['timestamp'].dt.month
     orders['day'] = orders['timestamp'].dt.day
+    orders['date'] = orders['timestamp'].dt.date
     orders['paid_price'] = orders['unit_price'] * orders['quantity']
     return orders
 
@@ -93,3 +83,15 @@ def load_process_books(books_path:Path):
     books.columns = books.columns.str.strip(':')
     books['author_set'] = books['author'].apply(lambda a: frozenset(name.strip() for name in a.split(',')))
     return books
+
+#------------------------------------------------------------
+# MAIN LOADING STUFF
+def load_all_files(folder_path:Path):
+    user_path = folder_path / 'users.csv'
+    order_path = folder_path / 'orders.parquet'
+    books_path = folder_path / 'books.yaml'
+
+    users, user_alias = load_process_users(user_path)
+    orders = load_process_orders(order_path)
+    books = load_process_books(books_path)
+    return users, user_alias, orders, books

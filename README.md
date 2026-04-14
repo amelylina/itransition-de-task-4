@@ -1,4 +1,4 @@
-TASK 4_DATA
+# **TASK 4_DATA**
 
 Load data from DATA1 folder into pandas and clean it – ensure proper types, for example, make dates are parsed as dates, handle any duplicated, missing or malformed values.
 
@@ -20,14 +20,12 @@ Plot a simple line chart of daily revenue using matplotlib.
 
 Repeat for the data from DATA2 and DATA3 folders separately.
 
-Send to me (p.lebedev@itransition.com) a link to code repository as well as a link to any kind of dashboard accessible online via browser (even static page is OK) containing three tabs/views/anything with the following:
-Top 5 days by revenue using the format "YYYY-MM-dd".
-Number of unique users.
-Number of unique sets of authors.
-The name of most popular author(s).
-Best buyer (with aliases) as an array of ids ([id1, id2, ...])
-Daily revenue chart
+## **Create a dashboard containing three tabs with the following:**
+- Top 5 days by revenue using the format "YYYY-MM-dd".
+- Number of unique users.
+- Number of unique sets of authors.
+- The name of most popular author(s).
+- Best buyer (with aliases) as an array of ids ([id1, id2, ...])
+- Daily revenue chart
 
 Make sure the information is presented neatly and professionally, resembling a BI dashboard rather than plain text. The use of any ready-made templates or engines is highly recommended.
-
-Plan to submit the solution not later than Wednesday 15.04.26.

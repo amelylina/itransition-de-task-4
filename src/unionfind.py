@@ -16,4 +16,3 @@ class UnionFind:
         px = self.find(x)
         py = self.find(y)
         self.parent[px] = py
-        pass
