@@ -8,7 +8,7 @@ from src.unionfind import UnionFind
 
 #------------------------------------------------------------
 # USERS
-def user_alias(users: pd.DataFrame):
+def build_alias(users: pd.DataFrame):
     uf = UnionFind()
 
     for uid in users['id']:
@@ -36,7 +36,7 @@ def load_process_users(users_path:Path):
     users = pd.read_csv(users_path)
     users['phone'] = users['phone'].str.replace(r'\D', '', regex=True)
 
-    alias, uf = user_alias(users)
+    alias, uf = build_alias(users)
     users['root_id'] = users['id'].apply(uf.find)
     users = users.drop_duplicates()
     return users, alias
